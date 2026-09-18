@@ -1,16 +1,21 @@
-# RPC Node Exporter & Benchmarking Tool
+# EVM & High-Throughput RPC Node Exporter
 
-A lightweight Prometheus exporter designed to track latency, block height progression, and availability of high-throughput EVM RPC endpoints.
+A lightweight Prometheus exporter written in Python for benchmarking and monitoring high-throughput EVM-compatible nodes and RPC endpoints.
 
-### Key Features
-- Sub-second block time & call latency measurements (`eth_blockNumber`).
-- Health and uptime tracking for validator/RPC instances.
-- Pre-configured Prometheus metrics endpoint (`:9101/metrics`).
-- Ready for Docker Compose deployment.
+### Metrics Tracked
+- `rpc_request_latency_seconds`: Latency across standard JSON-RPC calls (`eth_blockNumber`, `net_peerCount`, etc.).
+- `rpc_latest_block_number`: Real-time block height.
+- `rpc_peer_count`: Number of active node peers.
+- `rpc_is_syncing`: Sync state (1 = syncing, 0 = synced).
+- `rpc_gas_price_gwei`: Network gas price.
+- `rpc_up`: Health status flag (1 = operational, 0 = unreachable).
+
+### Architecture
+The service periodically queries target RPC endpoints, translates hex payloads into structured float metrics, and exposes them on `:9101/metrics` for Prometheus scraping.
 
 ### Quick Start
 
-1. Clone the repository:
+1. **Clone repository:**
    ```bash
    git clone https://github.com/ishishuykin/rpc-node-exporter.git
    cd rpc-node-exporter
